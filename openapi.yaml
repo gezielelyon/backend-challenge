@@ -1,0 +1,110 @@
+openapi: 3.0.0
+info:
+  title: Farm Management API
+  description: API for managing farms and agricultural productions.
+  version: "1.0.0"
+paths:
+  /farms:
+    post:
+      summary: Create a new farm
+      operationId: createFarm
+      tags:
+        - Farms
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Farm 1"
+                land_area:
+                  type: number
+                  format: float
+                  example: 100
+                unit_of_measure:
+                  type: string
+                  example: "acre"
+                address:
+                  type: string
+                  example: "123 Test St"
+                productions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      crop_type:
+                        type: string
+                        example: "CORN"
+                      is_irrigated:
+                        type: boolean
+                        example: true
+                      is_insured:
+                        type: boolean
+                        example: false
+      responses:
+        '201':
+          description: Farm successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "00000000-0000-0000-0000-000000000000"
+                  name:
+                    type: string
+                    example: "Farm 1"
+                  land_area:
+                    type: number
+                    format: float
+                    example: 100
+                  unit_of_measure:
+                    type: string
+                    example: "acre"
+                  address:
+                    type: string
+                    example: "123 Test St"
+                  productions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        crop_type:
+                          type: string
+                          example: "CORN"
+                        is_irrigated:
+                          type: boolean
+                          example: true
+                        is_insured:
+                          type: boolean
+                          example: false
+        '400':
+          description: Malformed request
+        '500':
+          description: Internal server error
+
+  /farms/{id}:
+    delete:
+      summary: Delete a farm
+      operationId: deleteFarm
+      tags:
+        - Farms
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the farm to be deleted
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Farm successfully deleted
+        '400':
+          description: Invalid ID provided
+        '404':
+          description: Farm not found
